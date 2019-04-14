@@ -1,0 +1,6 @@
+# idea
+*.idea
+*.md
+*.iml
+*.xml
+\target
