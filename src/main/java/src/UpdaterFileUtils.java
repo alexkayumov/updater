@@ -12,18 +12,18 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
 /**
- * Класс содержащий общие методы для работы с файлами
+ * РљР»Р°СЃСЃ СЃРѕРґРµСЂР¶Р°С‰РёР№ РѕР±С‰РёРµ РјРµС‚РѕРґС‹ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ С„Р°Р№Р»Р°РјРё
  */
 public class UpdaterFileUtils {
 
-    /** Логгер */
-    Logger log = Logger.getLogger(UpdaterFileUtils.class);
+    /** Р›РѕРіРіРµСЂ */
+    private static Logger log = Logger.getLogger(UpdaterFileUtils.class);
 
     /**
-     * Распаковщик архивов
+     * Р Р°СЃРїР°РєРѕРІС‰РёРє Р°СЂС…РёРІРѕРІ
      *
-     * @param archive полный путь до архива
-     * @param destination путь куда будут распаковываться файлы
+     * @param archive РїРѕР»РЅС‹Р№ РїСѓС‚СЊ РґРѕ Р°СЂС…РёРІР°
+     * @param destination РїСѓС‚СЊ РєСѓРґР° Р±СѓРґСѓС‚ СЂР°СЃРїР°РєРѕРІС‹РІР°С‚СЊСЃСЏ С„Р°Р№Р»С‹
      */
     public static void unzipArchive(String archive, String destination) {
         File file = new File(archive);
@@ -36,10 +36,10 @@ public class UpdaterFileUtils {
     }
 
     /**
-     * Выполняет поиск файла
+     * Р’С‹РїРѕР»РЅСЏРµС‚ РїРѕРёСЃРє С„Р°Р№Р»Р°
      *
-     * @param pathDirectory директория где производится поиск файла
-     * @param fileName наименование файла или наименование по регулярному выражению
+     * @param pathDirectory РґРёСЂРµРєС‚РѕСЂРёСЏ РіРґРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ РїРѕРёСЃРє С„Р°Р№Р»Р°
+     * @param fileName РЅР°РёРјРµРЅРѕРІР°РЅРёРµ С„Р°Р№Р»Р° РёР»Рё РЅР°РёРјРµРЅРѕРІР°РЅРёРµ РїРѕ СЂРµРіСѓР»СЏСЂРЅРѕРјСѓ РІС‹СЂР°Р¶РµРЅРёСЋ
      */
     public static File searchFile(String pathDirectory, String fileName) {
         File fileDir = new File(pathDirectory);
@@ -55,10 +55,10 @@ public class UpdaterFileUtils {
     }
 
     /**
-     * Считывает данные xml файла в обьект Document
+     * РЎС‡РёС‚С‹РІР°РµС‚ РґР°РЅРЅС‹Рµ xml С„Р°Р№Р»Р° РІ РѕР±СЊРµРєС‚ Document
      *
-     * @param xmlFile xml файл для дальнейшео парсинга
-     * @return обьект Document с данными xml файла
+     * @param xmlFile xml С„Р°Р№Р» РґР»СЏ РґР°Р»СЊРЅРµР№С€РµРѕ РїР°СЂСЃРёРЅРіР°
+     * @return РѕР±СЊРµРєС‚ Document СЃ РґР°РЅРЅС‹РјРё xml С„Р°Р№Р»Р°
      */
     public static Document getXmlDocument(File xmlFile) throws Exception {
         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
@@ -67,23 +67,23 @@ public class UpdaterFileUtils {
     }
 
     /**
-     * Выполняет поиск и возвращает значения тегов из файла XML
+     * Р’С‹РїРѕР»РЅСЏРµС‚ РїРѕРёСЃРє Рё РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёСЏ С‚РµРіРѕРІ РёР· С„Р°Р№Р»Р° XML
      *
-     * @param document XML документ
-     * @param nameElement наименание тэга
-     * @param nameAttribyte наименовние атрибута
-     * @return значение атрибута
+     * @param document XML РґРѕРєСѓРјРµРЅС‚
+     * @param nameElement РЅР°РёРјРµРЅР°РЅРёРµ С‚СЌРіР°
+     * @param nameAttribyte РЅР°РёРјРµРЅРѕРІРЅРёРµ Р°С‚СЂРёР±СѓС‚Р°
+     * @return Р·РЅР°С‡РµРЅРёРµ Р°С‚СЂРёР±СѓС‚Р°
      */
     public static String getTagValue(Document document,
                                      String nameElement,
                                      String nameAttribyte) throws Exception {
         Node nodeElement = document.getElementsByTagName(nameElement).item(0);
         if (nodeElement == null) {
-            throw new Exception("Не найден тег :" + nameElement);
+            throw new Exception("РќРµ РЅР°Р№РґРµРЅ С‚РµРі :" + nameElement);
         }
         Node nodeAttribyte = nodeElement.getAttributes().getNamedItem(nameAttribyte);
         if (nodeAttribyte == null) {
-            throw new Exception("Не найден атрибут :" + nameAttribyte);
+            throw new Exception("РќРµ РЅР°Р№РґРµРЅ Р°С‚СЂРёР±СѓС‚ :" + nameAttribyte);
         }
         return nodeAttribyte.getNodeValue();
     }

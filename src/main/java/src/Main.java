@@ -1,22 +1,22 @@
 package src;
 
-
-import java.io.File;
+import org.apache.log4j.Logger;
 
 /**
- * Основной класс приложения
+ * РћСЃРЅРѕРІРЅРѕР№ РєР»Р°СЃСЃ РїСЂРёР»РѕР¶РµРЅРёСЏ
  */
 public class Main {
 
-    public static void main(String[] args) throws Exception {
-        // Парсим файл с настройками приложения
-        SettingsXmlInit settingsXmlInit = new SettingsXmlInit();
-        System.out.println(settingsXmlInit.getPathIbank());
+    /**
+     * Р›РѕРіРіРµСЂ
+     */
+    private static Logger log = Logger.getLogger(Main.class);
 
-        // В директории сервера приложений ibank ищем файл version и получаем его значение
-        File version = UpdaterFileUtils.searchFile(settingsXmlInit.getPathIbank(), "version");
-        System.out.println("Получили version");
-        // Выполняем поиск и распаковку архива обновления
+    public static void main(String[] args) throws Exception {
+        log.debug("РЎС‚Р°СЂС‚СѓРµРј РїСЂРёР»РѕР¶РµРЅРёРµ");
+        // РџР°СЂСЃРёРј С„Р°Р№Р» СЃ РЅР°СЃС‚СЂРѕР№РєР°РјРё РїСЂРёР»РѕР¶РµРЅРёСЏ
+        SettingsXmlInit settingsXmlInit = new SettingsXmlInit();
+
     }
 }
 

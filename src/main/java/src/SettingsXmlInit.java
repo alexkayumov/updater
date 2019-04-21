@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -34,7 +33,7 @@ public class SettingsXmlInit {
     /**
      * Инициализация файла settings.xml
      */
-    SettingsXmlInit(){
+    SettingsXmlInit() {
         parseSettingsXml();
     }
 
@@ -45,49 +44,43 @@ public class SettingsXmlInit {
         String attribyteName = "path";
         log.debug("Начинаем разбор файла settings.xml");
         try {
-            File settingsXml = getSettingXml();
+            File settingsXml = Paths.get(APPLICATION_DIR.toString(), "config", "settings.xml").toFile();
             Document document = getXmlDocument(settingsXml);
             pathIbank = getTagValue(document, "path-ibank", attribyteName);
+            checkTag(pathIbank);
+
             pathUpdater = getTagValue(document, "path-update", attribyteName);
+            checkTag(pathUpdater);
+
             pathJava = getTagValue(document, "path-jre", attribyteName);
+            checkTag(pathJava);
+
+            log.debug("Разбор файла окончен (path-ibank = " + pathIbank + " path-update = " + pathUpdater + " path-jre = " + pathJava + ")");
         } catch (Exception ex) {
-            log.error("При разборе файла возникли ошибки \n" + ex);
+            log.error("При разборе файла возникли ошибки:" + ex);
         }
-        log.debug("Разбор файла окончен (path-ibank = " + pathIbank + " path-update = " + pathUpdater + " path-jre = " + pathJava + ")");
     }
 
     /**
-     * @return файл settings.xml
+     * Проверка заполнения тегов
+     *
+     * @param name наименование тега
      */
-    private File getSettingXml() throws Exception {
-        File settingsFile = Paths.get(APPLICATION_DIR.toString(), "resources", "config", "settings.xml").toFile();
-        if (settingsFile == null) {
-            throw new FileNotFoundException("Файл settings.xml не найден (\" + settingsFile + )");
+    private void checkTag(String name) throws Exception {
+        if (name.equals("")) {
+            throw new Exception("Не заполнен тег " + name);
         }
-        return settingsFile;
     }
 
     public String getPathIbank() {
         return pathIbank;
     }
 
-    public void setPathIbank(String pathIbank) {
-        this.pathIbank = pathIbank;
-    }
-
     public String getPathUpdater() {
         return pathUpdater;
     }
 
-    public void setPathUpdater(String pathUpdater) {
-        this.pathUpdater = pathUpdater;
-    }
-
     public String getPathJava() {
         return pathJava;
-    }
-
-    public void setPathJava(String pathJava) {
-        this.pathJava = pathJava;
     }
 }
