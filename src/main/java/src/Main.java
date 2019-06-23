@@ -2,21 +2,27 @@ package src;
 
 import org.apache.log4j.Logger;
 
-import java.util.Scanner;
-
 /**
  * Основной класс приложения
  */
 public class Main {
 
-    /**
-     * Логгер
-     */
+    private Configuration config;
+
+    /** Логгер */
     private static Logger log = Logger.getLogger(Main.class);
 
-    public static void main(String[] args) throws Exception {
-       Configuration config = new Configuration();
-        System.out.println(config.toString());
+    private Main() {
+        config = new Configuration();
+    }
+
+    public static void main(String[] args) {
+        Main main = new Main();
+        log.info("Стартуем приложение");
+        switch (args[0]){
+            case "1":
+               EmulatorUpdate.updateEmulator(main.config);
+        }
     }
 
 }

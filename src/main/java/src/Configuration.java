@@ -2,6 +2,7 @@ package src;
 
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -34,13 +35,19 @@ public class Configuration {
     /** Путь к JRE */
     private String jrePath;
 
-    /** Логгер */
+    /** Наименование файла с настройками */
+    private static final String CONFIG_PROPERTIES = "config.properties";
+
+    /** Вспомогательные обьекты */
     private static Logger log = Logger.getLogger(Configuration.class);
+
+    private HelperUtils helper;
 
     /**
      * Инициализируем файл конфигурации
      */
     public Configuration() {
+        helper = new HelperUtils();
         initConfig();
     }
 
@@ -72,29 +79,30 @@ public class Configuration {
      * Инициализация данных из файла config.properties
      */
     private void initConfig() {
-        log.info("Начало инициализации файла config.properties");
+        log.info("Начало инициализации файла c настройками приложения");
         try {
-            Properties properties = new Properties();
-            Path path = Paths.get("config.properties");
-            if (!path.toFile().exists()) {
-                throw new FileNotFoundException(path.toString());
+            Properties property = new Properties();
+            Path workDir = Paths.get(System.getProperty("user.dir")).getParent().resolve("config");
+            File configFile = helper.searchFile(workDir.toString(), CONFIG_PROPERTIES);
+            if (configFile == null) {
+                throw new FileNotFoundException();
             }
-            properties.load(Configuration.class.getClassLoader().getResourceAsStream("config.properties"));
-            emulatorPath = properties.getProperty("emulatorPath");
-            rainbowPath = properties.getProperty("rainbowPath");
-            archivesPath = properties.getProperty("downloadPath");
-            ibankPath = properties.getProperty("ibankPath");
-            ibankPrivatePath = properties.getProperty("ibankPrivatePath");
-            jrePath = properties.getProperty("jrePath");
+            emulatorPath = property.getProperty("emulatorPath");
+            rainbowPath = property.getProperty("rainbowPath");
+            archivesPath = property.getProperty("downloadPath");
+            ibankPath = property.getProperty("ibankPath");
+            ibankPrivatePath = property.getProperty("ibankPrivatePath");
+            jrePath = property.getProperty("jrePath");
+            log.info("Файл с настройками проинициализирован :\n" + this.toString());
         } catch (IOException ex) {
-            System.out.println("Ошибка при инициализации файла  : config.properties " + ex);
+            ex.printStackTrace();
+            log.error(ex);
         }
     }
 
     @Override
     public String toString() {
-        return "Configuration : \n" +
-                "emulatorPath :" + emulatorPath + "\n" +
+        return "emulatorPath :" + emulatorPath + "\n" +
                 "rainbowPath :" + rainbowPath + "\n" +
                 "archivesPath :" + archivesPath + "\n" +
                 "ibankPath :" + ibankPath + "\n" +

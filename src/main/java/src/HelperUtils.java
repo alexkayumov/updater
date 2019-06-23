@@ -2,6 +2,7 @@ package src;
 
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -22,16 +23,13 @@ public class HelperUtils {
     /**
      * @return поиск файла по регулярному выражению
      */
-    public File searchFileArchive(String searchDir, String regExp) {
-        System.out.println("Производим поиск файла в директории :" + searchDir);
+    public File searchFile(String searchDir, String regExp) {
         File[] listFiles = new File(searchDir).listFiles();
         Pattern pattern = Pattern.compile(regExp);
         if (listFiles != null) {
             for (File file : listFiles) {
-                System.out.println(file.getName());
                 Matcher matcher = pattern.matcher(file.getName());
                 if (matcher.find()) {
-                    System.out.println("Найден файл :" + file.getAbsolutePath());
                     return new File(file.getAbsolutePath());
                 }
             }
@@ -61,7 +59,7 @@ public class HelperUtils {
      * @param pathDirectory директория где производится поиск файла
      * @param fileName наименование файла или наименование по регулярному выражению
      */
-    public static File searchFile(String pathDirectory, String fileName) {
+    public static File searchFileTest(String pathDirectory, String fileName) {
         File fileDir = new File(pathDirectory);
         if (fileDir.isDirectory()) {
             return FileUtils.listFiles(new File(pathDirectory), null, true)
