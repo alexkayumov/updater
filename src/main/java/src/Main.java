@@ -19,9 +19,8 @@ public class Main {
     public static void main(String[] args) {
         Main main = new Main();
         log.info("Стартуем приложение");
-        switch (args[0]){
-            case "1":
-               EmulatorUpdate.updateEmulator(main.config);
+        if(args.length > 0){
+            System.out.println("==============================");
         }
     }
 

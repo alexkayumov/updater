@@ -1,12 +1,15 @@
-echo off
+ECHO OFF
 chcp 65001
-set WORK_DIR=%~dp0..\
+SET WORK_DIR=%~dp0..\
 
 @: -- раскоментировать и указать путь к JDK
-set JAVA_HOME=
-if "%JAVA_HOME%"=="" (
-^echo -------------------------------------------
-^echo НE ЗАДАН ПУТЬ К JAVA!!!
-^echo -------------------------------------------) else (
+SET JAVA_HOME=C:\JDK
+IF "%JAVA_HOME%"=="" (
+^ECHO -------------------------------------------
+^ECHO НE ЗАДАН ПУТЬ К JAVA!!!
+^ECHO -------------------------------------------) ELSE (
+ECHO ВЫБЕРИТЕ РЕЖИМ ОБНОВЛЕНИЯ :
+ECHO 1--СЕРВИСНЫЙ ЭМУЛЯТОР
+SET /P arg1 = %1
 "%JAVA_HOME%\bin\java" -cp %WORK_DIR%lib\* src.Main
 )
