@@ -22,8 +22,13 @@ public class EmulatorUpdate {
     public static void updateEmulator(Configuration config) {
         log.info("Обновляем сервисный эмулятор");
         HelperUtils helper = new HelperUtils();
+
         try {
-            System.out.println("Очищаем директорию " + config.getEmulatorPath());
+            String emulatorPath = config.getEmulatorPath();
+            if (emulatorPath == null) {
+                log.error("Не задан путь к сервисному эмулятору");
+                return;
+            }
             helper.cleanDir(config.getEmulatorPath());
             File archive = helper.searchFile(config.getArchivesPath(), regExp);
             if (archive == null) {
@@ -32,7 +37,7 @@ public class EmulatorUpdate {
             helper.unzipArchive(archive.getAbsolutePath(), config.getEmulatorPath());
             log.info("Обновление заверешено");
         } catch (Exception ex) {
-            System.out.println(ex);
+            log.error(ex);
         }
     }
 }

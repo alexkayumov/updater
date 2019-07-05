@@ -7,22 +7,28 @@ import org.apache.log4j.Logger;
  */
 public class Main {
 
-    private Configuration config;
+    /**
+     * Обновление сервисного эмулятора
+     */
+    private static final String UPDATE_EMULATOR = "1";
 
-    /** Логгер */
+    /**
+     * Логгер
+     */
     private static Logger log = Logger.getLogger(Main.class);
-
-    private Main() {
-        config = new Configuration();
-    }
 
     public static void main(String[] args) {
         Main main = new Main();
-        log.info("Стартуем приложение");
-        if(args.length > 0){
-            System.out.println("==============================");
-        }
+        Configuration config = new Configuration();
+        EmulatorUpdate.updateEmulator(config);
+//        switch (args[0]) {
+//            case UPDATE_EMULATOR:
+//                EmulatorUpdate.updateEmulator(main.config);
+//                break;
+//            default:
+//                log.error("Неизвестный режим обновления");
+//                break;
+//        }
     }
-
 }
 
