@@ -7,7 +7,7 @@ IF "%JAVA_HOME%"=="" goto error
 ECHO ВЫБЕРИТЕ РЕЖИМ ОБНОВЛЕНИЯ :
 ECHO 1--СЕРВИСНЫЙ ЭМУЛЯТОР
 SET /P value=
-"%JAVA_HOME%\bin\java" -cp %WORK_DIR%lib\* src.Main %value%
+"%JAVA_HOME%\bin\java" -cp %WORK_DIR%lib\* Main %value%
 exit
 :error
 ECHO НE ЗАДАН ПУТЬ К JRE!!!

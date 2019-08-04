@@ -1,5 +1,3 @@
-package src;
-
 /**
  * Обьект с данными xml connection
  */

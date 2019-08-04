@@ -1,8 +1,5 @@
-package src;
-
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

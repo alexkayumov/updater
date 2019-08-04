@@ -1,5 +1,3 @@
-package src;
-
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -17,7 +15,7 @@ public class EmulatorUpdate {
     private static Logger log = Logger.getLogger(EmulatorUpdate.class);
 
     /**
-     * Распаковка и замена файлов эмулятора
+     * Распаковка и замена эмулятора
      */
     public static void updateEmulator(Configuration config) {
         log.info("Обновляем сервисный эмулятор");
