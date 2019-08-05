@@ -2,5 +2,4 @@
 *.idea
 *.md
 *.iml
-*.xml
 \target
