@@ -1,15 +1,12 @@
 #!/bin/bash
 # Устанавливаем рабочую директорию
-WORK_DIR=$PWD
+WORK_DIR=$(dirname $PWD)
 # Путь к JAVA
 JAVA_HOME=""
 
-if [ "$JAVA_HOME" == "" ]; then
-    echo "НE ЗАДАН ПУТЬ К JRE"
-else
-	echo "ВЫБЕРИТЕ РЕЖИМ ОБНОВЛЕНИЯ :"
-	echo "1--СЕРВИСНЫЙ ЭМУЛЯТОР"
-	read -n 1
-	echo $WORK_DIR/lib/
-	"$JAVA_HOME/bin/java" -cp $WORK_DIR/lib/* Main $1
+if [ -z $JAVA_HOME ]; then
+    echo "JAVA_HOME is not set"
+    exit 1
 fi
+
+"$JAVA_HOME/bin/java" -cp $WORK_DIR/lib/* Main $1
