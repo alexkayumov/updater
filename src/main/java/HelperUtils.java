@@ -1,5 +1,6 @@
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -16,6 +17,11 @@ import java.util.regex.Pattern;
  *         05.06.19 15:45
  */
 public class HelperUtils {
+
+    /**
+     * Логгер
+     */
+    private static Logger log = Logger.getLogger(HelperUtils.class);
 
     /**
      * @return поиск файла по регулярному выражению
@@ -37,14 +43,16 @@ public class HelperUtils {
     /**
      * Распаковщик архивов
      *
-     * @param archive полный путь до архива
+     * @param archivePath полный путь до архива
      * @param destination путь куда будут распаковываться файлы
      */
-    public void unzipArchive(String archive, String destination) {
-        File file = new File(archive);
+    public void unzipArchive(String archivePath, String destination) {
+        File file = new File(archivePath);
+        log.info("Начало распаковки архива " + file);
         try {
             net.lingala.zip4j.core.ZipFile zipFile = new net.lingala.zip4j.core.ZipFile(file);
             zipFile.extractAll(destination);
+            log.info("Распаковка архива " + file + " в директорию " + destination + " завершена");
         } catch (ZipException ex) {
             ex.printStackTrace();
         }

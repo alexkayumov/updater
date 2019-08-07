@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<!-- Конфигурация соединений с Базами Данных -->
+<Connectors>
+
+    <!--
+        Конфигурация соединения с БД системы "iBank 2".
+
+        Соединение конфигурируется следующими параметрами:
+
+        driver - JDBC-драйвер, используемый для установления соединения.
+            Этот параметр является обязательным.
+
+        url - URL Базы Данных. Этот параметр является обязательным.
+
+        schema - схема по умолчанию, в которой находятся объекты БД.
+
+        login - имя пользователя для подключения к БД. Данный параметр является
+            обязательным только в случае, если соединение с БД будет
+            устанавливаться автоматически.
+
+        pass - пароль пользователя для подключения к БД. Данный параметр
+            является обязательным только в случае, если соединение с БД будет
+            устанавливаться автоматически.
+      -->
+
+    <!-- Пример конфигурации для подключения к СУБД Oracle. -->
+    <!--
+    <Connector name="ibank">
+        <database url="jdbc:oracle:thin:@192.168.0.1:1521:SID"
+            driver="oracle.jdbc.driver.OracleDriver" schema="ibank2"
+            login="ibank2" pass="change_on_install"/>
+    </Connector>
+    -->
+
+    <!-- Пример конфигурации для подключения к СУБД MSSQL через TCP/IP. -->
+    <!--
+    <Connector name="ibank">
+        <database url="jdbc:jtds:sqlserver://192.168.0.1:1433;charset=Cp1251;lobBuffer=5242880"
+            driver="net.sourceforge.jtds.jdbc.Driver" schema="ibank2"
+            login="ibank2" pass="change_on_install"/>
+    </Connector>
+    -->
+
+    <!-- Пример конфигурации для подключения к СУБД MSSQL через именованный канал. -->
+    <!--
+    <Connector name="ibank">
+        <database url="jdbc:jtds:sqlserver://127.0.0.1;namedPipe=true;charset=Cp1251;lobBuffer=5242880"
+            driver="net.sourceforge.jtds.jdbc.Driver" schema="ibank2"
+            login="ibank2" pass="change_on_install"/>
+    </Connector>
+    -->
+
+    <!-- Пример конфигурации для подключения к СУБД Sybase. -->
+    <!--
+    <Connector name="ibank">
+        <database url="jdbc:sybase:Tds:192.168.0.1:2048?CHARSET=cp1251"
+            driver="com.sybase.jdbc3.jdbc.SybDriver" schema="dbo"
+            login="ibank2" pass="change_on_install"/>
+    </Connector>
+    -->
+
+    <!-- Пример конфигурации для подключения к СУБД PostgreSQL. -->
+        <Connector name="ibank">
+        <database url="jdbc:postgresql://192.168.3.83:5432/ibank"
+            driver="org.postgresql.Driver" schema="ibank"
+            login="ibank" pass="owner"/>
+    </Connector>
+
+    <!-- Пример конфигурации для подключения к СУБД DB2. -->
+    <!--
+    <Connector name="ibank">
+        <database url="jdbc:db2://192.168.0.1:6789/ibank2"
+            driver="COM.ibm.db2.jdbc.net.DB2Driver" schema="ibank2"
+            login="ibank2" pass="owner"/>
+    </Connector>
+    -->
+
+</Connectors>
+

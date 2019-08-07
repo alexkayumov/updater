@@ -9,4 +9,4 @@ if [ -z $JAVA_HOME ]; then
     exit 1
 fi
 
-"$JAVA_HOME/bin/java" -cp $WORK_DIR/lib/* Main $1
+"$JAVA_HOME/bin/java" -cp $WORK_DIR/lib/*: Main $1

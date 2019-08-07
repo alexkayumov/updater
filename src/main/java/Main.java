@@ -11,6 +11,11 @@ public class Main {
     private static final String UPDATE_EMULATOR = "1";
 
     /**
+     * Обновление сервера интеграции
+     */
+    private static final String UPDATE_INTEGRATION = "2";
+
+    /**
      * Логгер
      */
     private static Logger log = Logger.getLogger(Main.class);
@@ -21,6 +26,9 @@ public class Main {
             case UPDATE_EMULATOR:
                 EmulatorUpdate.updateEmulator(config);
                 break;
+            case UPDATE_INTEGRATION:
+                RainbowUpdate rainbowUpdate = new RainbowUpdate();
+                rainbowUpdate.updateRinbow(config);
             default:
                 log.error("Неизвестный режим обновления");
                 break;

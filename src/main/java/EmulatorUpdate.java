@@ -30,10 +30,10 @@ public class EmulatorUpdate {
             helper.cleanDir(config.getEmulatorPath());
             File archive = helper.searchFile(config.getArchivesPath(), regExp);
             if (archive == null) {
-                throw new FileNotFoundException("Файл " + archive + " не найден");
+                throw new FileNotFoundException("Файл архива эмулятора" + archive + " не найден");
             }
             helper.unzipArchive(archive.getAbsolutePath(), config.getEmulatorPath());
-            log.info("Обновление заверешено");
+            log.info("Обновление сервисного эмулятора заверешено");
         } catch (Exception ex) {
             log.error(ex);
         }

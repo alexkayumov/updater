@@ -87,7 +87,7 @@ public class Configuration {
             }
             emulatorPath = property.getProperty("emulatorPath");
             rainbowPath = property.getProperty("rainbowPath");
-            archivesPath = property.getProperty("downloadPath");
+            archivesPath = property.getProperty("archivesPath");
             ibankPath = property.getProperty("ibankPath");
             ibankPrivatePath = property.getProperty("ibankPrivatePath");
             jrePath = property.getProperty("jrePath");
