@@ -12,7 +12,7 @@ public class HelperUtilsTest {
         this.helperUtils = new HelperUtils();
     }
 
-    @Test
+    //@Test
     public void unzipArchiveTest() throws Exception {
         Path archive = Paths.get(System.getProperty("base.dir"));
         System.out.println(archive.toString());

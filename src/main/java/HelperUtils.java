@@ -1,4 +1,4 @@
-import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
@@ -10,7 +10,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,9 +20,7 @@ import java.util.List;
  */
 public class HelperUtils {
 
-    /**
-     * Логгер
-     */
+    /** Логгер */
     private static Logger log = Logger.getLogger(HelperUtils.class);
 
     /**
@@ -44,6 +41,7 @@ public class HelperUtils {
 
     /**
      * Поиск файлов по регулярному выражению
+     *
      * @param searchDir директория в которой ведется поиск
      * @param regExp выражению о которому ищутся файлы
      * @return список найденных файлов
@@ -71,11 +69,11 @@ public class HelperUtils {
      */
     public void unzipArchive(String archivePath, String destination) {
         File file = new File(archivePath);
-        log.info("Распаковка архива " + file);
+        log.info("Распаковка архива " + file.getName());
         try {
             ZipFile zipFile = new ZipFile(file);
             zipFile.extractAll(destination);
-            log.info("Распаковка архива " + file + " в директорию " + destination + " завершена");
+            log.info("Распаковка архива " + file.getName() + " в директорию " + destination + " завершена");
         } catch (ZipException ex) {
             ex.printStackTrace();
         }
@@ -133,7 +131,7 @@ public class HelperUtils {
      * Выполняет поиск и возвращает значения тегов из файла XML
      *
      * @param document XML документ
-     * @param nameElement наименание тэга
+     * @param nameElement  наименание тэга
      * @param nameAttribyte наименовние атрибута
      * @return значение атрибута
      */
