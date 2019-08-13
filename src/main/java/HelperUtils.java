@@ -1,5 +1,7 @@
+import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -7,8 +9,9 @@ import org.w3c.dom.Node;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Класс содержащий общие вспомогательные методы
@@ -28,17 +31,37 @@ public class HelperUtils {
      */
     public File searchFile(String searchDir, String regExp) {
         File[] listFiles = new File(searchDir).listFiles();
-        Pattern pattern = Pattern.compile(regExp);
+        RegexFileFilter fileFilter = new RegexFileFilter(regExp);
         if (listFiles != null) {
             for (File file : listFiles) {
-                Matcher matcher = pattern.matcher(file.getName());
-                if (matcher.find()) {
+                if (fileFilter.accept(file)) {
                     return new File(file.getAbsolutePath());
                 }
             }
         }
         return null;
     }
+
+    /**
+     * Поиск файлов по регулярному выражению
+     * @param searchDir директория в которой ведется поиск
+     * @param regExp выражению о которому ищутся файлы
+     * @return список найденных файлов
+     */
+    public List<File> searchFiles(String searchDir, String regExp) {
+        File[] listFiles = new File(searchDir).listFiles();
+        List<File> searchFiles = new ArrayList<>();
+        RegexFileFilter fileFilter = new RegexFileFilter(regExp);
+        if (listFiles != null) {
+            for (File file : listFiles) {
+                if (fileFilter.accept(file)) {
+                    searchFiles.add(file);
+                }
+            }
+        }
+        return searchFiles;
+    }
+
 
     /**
      * Распаковщик архивов
@@ -48,9 +71,9 @@ public class HelperUtils {
      */
     public void unzipArchive(String archivePath, String destination) {
         File file = new File(archivePath);
-        log.info("Начало распаковки архива " + file);
+        log.info("Распаковка архива " + file);
         try {
-            net.lingala.zip4j.core.ZipFile zipFile = new net.lingala.zip4j.core.ZipFile(file);
+            ZipFile zipFile = new ZipFile(file);
             zipFile.extractAll(destination);
             log.info("Распаковка архива " + file + " в директорию " + destination + " завершена");
         } catch (ZipException ex) {
@@ -109,8 +132,8 @@ public class HelperUtils {
     /**
      * Выполняет поиск и возвращает значения тегов из файла XML
      *
-     * @param document      XML документ
-     * @param nameElement   наименание тэга
+     * @param document XML документ
+     * @param nameElement наименание тэга
      * @param nameAttribyte наименовние атрибута
      * @return значение атрибута
      */

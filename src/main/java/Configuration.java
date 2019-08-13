@@ -1,8 +1,6 @@
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -15,19 +13,19 @@ import java.util.Properties;
  */
 public class Configuration {
 
-    /** Директория где установлен сервисный эмулятор из файла config.properties*/
+    /** Директория где установлен сервисный эмулятор из файла config.properties */
     private String emulatorPath;
 
-    /** Директория расположения платформы интеграции из файла config.properties*/
+    /** Директория расположения платформы интеграции из файла config.properties */
     private String rainbowPath;
 
-    /** Путь к директории где хранятся архивы для обновления из файла config.properties*/
+    /** Путь к директории где хранятся архивы для обновления из файла config.properties */
     private String archivesPath;
 
-    /** Путь к директории ibank*/
+    /** Путь к директории ibank */
     private String ibankPath;
 
-    /** Путь к директории ibank для физических лиц*/
+    /** Путь к директории ibank для физических лиц */
     private String ibankPrivatePath;
 
     /** Путь к JRE */
@@ -38,7 +36,6 @@ public class Configuration {
 
     /** Вспомогательные обьекты */
     private static Logger log = Logger.getLogger(Configuration.class);
-
     private HelperUtils helper;
 
     /**
@@ -61,7 +58,7 @@ public class Configuration {
         return archivesPath;
     }
 
-    public String getIbankPath(){
+    public String getIbankPath() {
         return ibankPath;
     }
 
@@ -77,24 +74,26 @@ public class Configuration {
      * Инициализация данных из файла config.properties
      */
     private void initConfig() {
-        log.info("Начало инициализации файла c настройками приложения");
+        log.info("Начало инициализации файла config.properties");
         try {
-            Properties property = new Properties();
             Path workDir = Paths.get(System.getProperty("user.dir")).getParent().resolve("config");
             File configFile = helper.searchFile(workDir.toString(), CONFIG_PROPERTIES);
             if (configFile == null) {
                 throw new FileNotFoundException();
             }
+            Properties property = new Properties();
+            property.load(new FileReader(configFile));
             emulatorPath = property.getProperty("emulatorPath");
             rainbowPath = property.getProperty("rainbowPath");
             archivesPath = property.getProperty("archivesPath");
             ibankPath = property.getProperty("ibankPath");
             ibankPrivatePath = property.getProperty("ibankPrivatePath");
             jrePath = property.getProperty("jrePath");
-            log.info("Файл с настройками проинициализирован :\n" + this.toString());
+            log.info("\n" + this.toString() + "\nКонец инициализации.");
         } catch (IOException ex) {
             ex.printStackTrace();
             log.error(ex);
+            System.exit(-1);
         }
     }
 

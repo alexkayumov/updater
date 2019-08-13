@@ -2,11 +2,20 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Распаковка и замена файлов эмулятора
  */
-public class EmulatorUpdate {
+public class EmulatorUpdate implements Comparator<String>{
+
+    @Override
+    public int compare(String o1, String o2) {
+
+        return 0;
+    }
 
     /** Выражение для поиска архива с эмулятором */
     private static final String regExp = "ServiceEmulator.*.zip";
@@ -18,24 +27,40 @@ public class EmulatorUpdate {
      * Распаковка и замена эмулятора
      */
     public static void updateEmulator(Configuration config) {
-        log.info("Обновляем сервисный эмулятор");
         HelperUtils helper = new HelperUtils();
-
         try {
             String emulatorPath = config.getEmulatorPath();
-            if (emulatorPath == null) {
-                log.error("Не задан путь к сервисному эмулятору");
+            String emulatorArchivePath = config.getArchivesPath();
+            if (emulatorPath == null || "".equals(emulatorPath)) {
+                log.error("Не найден путь к сервисному эмулятору");
                 return;
             }
-            helper.cleanDir(config.getEmulatorPath());
-            File archive = helper.searchFile(config.getArchivesPath(), regExp);
+            System.out.println("test");
+            System.out.println(helper.searchFiles(emulatorArchivePath, regExp).size());
+
+            File archive = helper.searchFile(emulatorArchivePath, regExp);
+            List<File> findArchiveList = helper.searchFiles(emulatorArchivePath, regExp);
+            System.out.println(findArchiveList);
             if (archive == null) {
-                throw new FileNotFoundException("Файл архива эмулятора" + archive + " не найден");
+                throw new FileNotFoundException("Файл архива эмулятора не найден : " + emulatorArchivePath);
             }
-            helper.unzipArchive(archive.getAbsolutePath(), config.getEmulatorPath());
-            log.info("Обновление сервисного эмулятора заверешено");
+
+            log.info("Начало обновления сервисного эмулятора");
+            log.info("Очистка директории " + emulatorPath);
+
+            helper.cleanDir(emulatorPath);
+
+            log.info("Очистка директории завершено");
+
+            //helper.unzipArchive(archive.getAbsolutePath(), emulatorPath);
+            log.info("Обновление сервисного эмулятора завершено");
         } catch (Exception ex) {
             log.error(ex);
         }
+    }
+
+    public void checkVersion(List<File> listArchive) {
+        List<String> listVersions = new ArrayList<>();
+
     }
 }
