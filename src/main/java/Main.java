@@ -21,19 +21,19 @@ public class Main {
     private static Logger log = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
-        Configuration config = new Configuration();
-        EmulatorUpdate.updateEmulator(config);
-        switch (args[0]) {
-            case UPDATE_EMULATOR:
-                EmulatorUpdate.updateEmulator(config);
-                break;
-            case UPDATE_INTEGRATION:
-                RainbowUpdate rainbowUpdate = new RainbowUpdate();
-                rainbowUpdate.updateRinbow(config);
-            default:
-                log.error("Неизвестный режим обновления");
-                break;
-        }
+        Configuration config = new Configuration(args[0]);
+        log.info("Запустили эмулятор");
+//        switch (args[1]) {
+//            case UPDATE_EMULATOR:
+//                EmulatorUpdate.updateEmulator(config);
+//                break;
+//            case UPDATE_INTEGRATION:
+//                RainbowUpdate rainbowUpdate = new RainbowUpdate();
+//                rainbowUpdate.updateRinbow(config);
+//            default:
+//                log.error("Неизвестный режим обновления");
+//                break;
+//        }
     }
 }
 

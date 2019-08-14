@@ -40,10 +40,11 @@ public class Configuration {
 
     /**
      * Инициализируем файл конфигурации
+     * @param applicationPath местонахождение приложения
      */
-    public Configuration() {
+    public Configuration(String applicationPath) {
         helper = new HelperUtils();
-        initConfig();
+        initConfig(applicationPath);
     }
 
     public String getEmulatorPath() {
@@ -73,11 +74,11 @@ public class Configuration {
     /**
      * Инициализация данных из файла config.properties
      */
-    private void initConfig() {
+    private void initConfig(String applicationPath) {
         log.info("Начало инициализации файла config.properties");
         try {
-            Path workDir = Paths.get(System.getProperty("user.dir")).getParent().resolve("config");
-            File configFile = helper.searchFile(workDir.toString(), CONFIG_PROPERTIES);
+            Path applcationDir = Paths.get(applicationPath).resolve("config");
+            File configFile = helper.searchFile(applcationDir.toString(), CONFIG_PROPERTIES);
             if (configFile == null) {
                 throw new FileNotFoundException();
             }
