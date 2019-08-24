@@ -1,6 +1,5 @@
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -9,7 +8,9 @@ import org.w3c.dom.Node;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,6 +48,7 @@ public class HelperUtils {
      * @return список найденных файлов
      */
     public List<File> searchFiles(String searchDir, String regExp) {
+        System.out.println("===================" + searchDir);
         File[] listFiles = new File(searchDir).listFiles();
         List<File> searchFiles = new ArrayList<>();
         RegexFileFilter fileFilter = new RegexFileFilter(regExp);
@@ -60,6 +62,23 @@ public class HelperUtils {
         return searchFiles;
     }
 
+    /**
+     * Поиск архивов в указанной директории. Сортировка и возврат последней версии.
+     *
+     * @param archiveDirectory директория в которой ведется поиск архивов
+     * @param regExp выражение для поиска архива
+     * @return последняя версия архивного update
+     */
+    public File getArchive(String archiveDirectory, String regExp) throws FileNotFoundException {
+        List<File> fileList = searchFiles(archiveDirectory, regExp);
+        if (fileList.isEmpty()) {
+            throw new FileNotFoundException("Отсутсвуют архивы для обновления.  " + archiveDirectory);
+        }
+        log.debug("Найдено файлов :" + fileList);
+        Collections.reverse(fileList);
+        return fileList.get(0);
+    }
+
 
     /**
      * Распаковщик архивов
@@ -69,32 +88,13 @@ public class HelperUtils {
      */
     public void unzipArchive(String archivePath, String destination) {
         File file = new File(archivePath);
-        log.info("Распаковка архива " + file.getName());
+        log.debug("Распаковка архива " + file.getName());
         try {
             ZipFile zipFile = new ZipFile(file);
             zipFile.extractAll(destination);
-            log.info("Распаковка архива " + file.getName() + " в директорию " + destination + " завершена");
+            log.debug("Распаковка архива " + file.getName() + " в директорию " + destination + " завершена");
         } catch (ZipException ex) {
             ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Выполняет поиск файла
-     *
-     * @param pathDirectory директория где производится поиск файла
-     * @param fileName наименование файла или наименование по регулярному выражению
-     */
-    public static File searchFileTest(String pathDirectory, String fileName) {
-        File fileDir = new File(pathDirectory);
-        if (fileDir.isDirectory()) {
-            return FileUtils.listFiles(new File(pathDirectory), null, true)
-                    .stream()
-                    .filter(f -> f.getName().matches(fileName))
-                    .findFirst()
-                    .orElse(null);
-        } else {
-            return null;
         }
     }
 
@@ -105,6 +105,7 @@ public class HelperUtils {
      */
     public void cleanDir(String path) {
         File[] files = new File(path).listFiles();
+        log.debug("Очистка директории : " + path);
         if (files != null) {
             for (File f : files) {
                 if (f.isDirectory()) {
@@ -113,6 +114,7 @@ public class HelperUtils {
                 f.delete();
             }
         }
+        log.debug("Очистка завершена");
     }
 
     /**

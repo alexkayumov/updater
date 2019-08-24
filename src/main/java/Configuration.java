@@ -31,6 +31,9 @@ public class Configuration {
     /** Путь к JRE */
     private String jrePath;
 
+    /** Кастомный путь к архиву эмулятора */
+    private String customEmulatorPath;
+
     /** Наименование файла с настройками */
     private static final String CONFIG_PROPERTIES = "config.properties";
 
@@ -71,16 +74,21 @@ public class Configuration {
         return jrePath;
     }
 
+    public String getCustomEmulatorPath() {
+        return customEmulatorPath;
+    }
+
     /**
      * Инициализация данных из файла config.properties
      */
     private void initConfig(String applicationPath) {
         log.info("Начало инициализации файла config.properties");
         try {
-            Path applcationDir = Paths.get(applicationPath).resolve("config");
+            //Path applcationDir = Paths.get(applicationPath).resolve("config");
+            Path applcationDir = Paths.get(applicationPath);
             File configFile = helper.searchFile(applcationDir.toString(), CONFIG_PROPERTIES);
             if (configFile == null) {
-                throw new FileNotFoundException();
+                throw new FileNotFoundException("Не найден файл конфигурации. ");
             }
             Properties property = new Properties();
             property.load(new FileReader(configFile));
@@ -90,10 +98,10 @@ public class Configuration {
             ibankPath = property.getProperty("ibankPath");
             ibankPrivatePath = property.getProperty("ibankPrivatePath");
             jrePath = property.getProperty("jrePath");
+            customEmulatorPath = property.getProperty("customEmulatorPath");
             log.info("\n" + this.toString() + "\nКонец инициализации.");
         } catch (IOException ex) {
             ex.printStackTrace();
-            log.error(ex);
             System.exit(-1);
         }
     }
@@ -105,6 +113,7 @@ public class Configuration {
                 "archivesPath :" + archivesPath + "\n" +
                 "ibankPath :" + ibankPath + "\n" +
                 "ibankPrivatePath :" + ibankPrivatePath + "\n" +
-                "jrePath :" + jrePath;
+                "jrePath :" + jrePath +"\n" +
+                "customEmulatorPath :" + customEmulatorPath;
     }
 }

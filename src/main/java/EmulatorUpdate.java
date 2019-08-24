@@ -1,9 +1,7 @@
+import net.lingala.zip4j.ZipFile;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Распаковка и замена файлов эмулятора
@@ -13,39 +11,71 @@ public class EmulatorUpdate {
     /** Выражение для поиска архива с эмулятором */
     private static final String regExp = "ServiceEmulator.*.zip";
 
+    /** Выражение для поиска архива сервера интеграции */
+    private static final String regExpRainbow = "Scheduled_Release_Branch_Build";
+
     /** Логгер */
-    private static Logger log = Logger.getLogger(EmulatorUpdate.class);
+    private Logger log = Logger.getLogger(EmulatorUpdate.class);
+
+    /** Кастомная директория эмулятора */
+    private String customEmulatorPath;
+
+    /** Директория с установленным эмулятором */
+    private String emulatorPath;
+
+    /** Диреткория с архивами для обновления */
+    private String archivePath;
+
+    /** Вспомогательный обьект для работы с файлами */
+    private HelperUtils helper;
+
+    /**
+     * Конструктор. Инициализация данных
+     *
+     * @param config данные файла config.prop
+     */
+    EmulatorUpdate(Configuration config) {
+        customEmulatorPath = config.getCustomEmulatorPath();
+        emulatorPath = config.getEmulatorPath();
+        archivePath = config.getArchivesPath();
+        helper = new HelperUtils();
+    }
 
     /**
      * Распаковка и замена эмулятора
      */
-    public static void updateEmulator(Configuration config) {
-        HelperUtils helper = new HelperUtils();
+    public void updateEmulator() {
         try {
-            String emulatorPath = config.getEmulatorPath();
-            String emulatorArchivePath = config.getArchivesPath();
-            if (emulatorPath == null || "".equals(emulatorPath)) {
-                log.error("Не найден путь к сервисному эмулятору");
-                return;
+            if (customEmulatorPath == null) {
+                System.out.println("ssssssssssssssssss");
+                log.debug("Указан путь к эмулятору " + customEmulatorPath);
+                File emulator = helper.getArchive(customEmulatorPath, regExp);
+                updateEmulator(emulator);
             }
-            List<File> fileList = helper.searchFiles(emulatorArchivePath, regExp);
-            log.info("Найдено файлов : " + fileList);
-            if (fileList.isEmpty()) {
-                throw new FileNotFoundException("В директории " + emulatorArchivePath + " не найдены архивы сервисного эмулятора");
-            }
-            Collections.reverse(fileList);
-            File extractArchive = fileList.get(0);
+            System.out.println("zzzz==========" + archivePath);
+            File rainbowArchive = helper.getArchive(archivePath, regExpRainbow);
+//            ZipFile zipFile = new ZipFile(file);
+//            zipFile.extractAll(destination);
+//            log.info("Распаковка архива " + file.getName() + " в директорию " + destination + " завершена");
 
-            log.info("Начало обновления сервисного эмулятора");
-            log.info("Очистка директории " + emulatorPath);
+            // Распаковываем общий архив сборки
 
-            helper.cleanDir(emulatorPath);
-            log.info("Очистка директории завершена");
-
-            helper.unzipArchive(extractArchive.getPath(), emulatorPath);
-            log.info("Обновление сервисного эмулятора завершено");
+            log.info("Обновление эмулятора из архива сервера интеграции");
         } catch (Exception ex) {
             log.error(ex);
         }
+    }
+
+    /**
+     * Обновление сервисного эмулятора
+     *
+     * @param newEmulatorFile архив для обновления эмулятора
+     */
+    private void updateEmulator(File newEmulatorFile) {
+        log.info("Начало обновления сервисного эмулятора");
+        log.debug("Архив для обновления:" + newEmulatorFile.getName());
+        helper.cleanDir(emulatorPath);
+        helper.unzipArchive(newEmulatorFile.getPath(), emulatorPath);
+        log.info("Обновление сервисного эмулятора завершено");
     }
 }
